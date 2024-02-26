@@ -8,3 +8,13 @@ F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.csproj
 F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.CoreCompileInputs.cache
 F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.exe
 F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.pdb
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.AssemblyReference.cache
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.Form1.resources
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.Properties.Resources.resources
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.GenerateResource.cache
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.CoreCompileInputs.cache
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.exe
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.pdb
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.exe.config
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.exe
+C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.pdb

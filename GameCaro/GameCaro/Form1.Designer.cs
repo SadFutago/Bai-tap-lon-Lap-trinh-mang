@@ -67,6 +67,7 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.pictureBox1.BackgroundImage = global::GameCaro.Properties.Resources.GameCaro;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(6, 29);
             this.pictureBox1.Name = "pictureBox1";
@@ -151,9 +152,11 @@
             // 
             // pctbMark
             // 
+            this.pctbMark.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pctbMark.Location = new System.Drawing.Point(255, 82);
             this.pctbMark.Name = "pctbMark";
             this.pctbMark.Size = new System.Drawing.Size(208, 186);
+            this.pctbMark.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pctbMark.TabIndex = 2;
             this.pctbMark.TabStop = false;
             // 
