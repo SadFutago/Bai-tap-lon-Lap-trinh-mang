@@ -1,0 +1,10 @@
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\bin\Debug\GameCaro.exe.config
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\bin\Debug\GameCaro.exe
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\bin\Debug\GameCaro.pdb
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.AssemblyReference.cache
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.Form1.resources
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.Properties.Resources.resources
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.GenerateResource.cache
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.CoreCompileInputs.cache
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.exe
+F:\HOC KY 6\Lap trinh mang\Thuc hanh\GameCaro\GameCaro\obj\Debug\GameCaro.pdb
