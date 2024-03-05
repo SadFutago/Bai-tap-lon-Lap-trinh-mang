@@ -51,6 +51,43 @@ namespace GameCaro
             get { return playerMark; }
             set { playerMark = value; }
         }
+
+        private event EventHandler playerMarked;
+        public event EventHandler PlayerMarked
+        {
+            add
+            {
+                playerMarked += value;
+            }
+            remove
+            {
+                playerMarked -= value;
+            }
+        }
+
+
+        private event EventHandler endedGame;
+        public event EventHandler EndedGame
+        {
+            add
+            {
+                endedGame += value;
+            }
+            remove
+            {
+                endedGame -= value;
+            }
+        }
+
+        private Stack<PlayInfo> playTimeLine; 
+
+        public Stack<PlayInfo> PlayTimeLine
+        {
+            get { return playTimeLine; }
+            set {  playTimeLine = value; }
+        }
+
+        private List<List<Button>> Matrix;
         #endregion
 
         #region Initialize
@@ -64,20 +101,29 @@ namespace GameCaro
             {
                 new Player("Player1", Image.FromFile(Application.StartupPath + "\\Resources\\cross.png")),
                 new Player("Player2", Image.FromFile(Application.StartupPath + "\\Resources\\circle.png"))
-            };
+            };  
+            
 
-            CurrentPlayer = 0;
-
-            ChangePlayer();
         }
         #endregion
 
         #region Methods        
         public void DrawChessBoard()
         {
+            ChessBoard.Enabled = true;
+            ChessBoard.Controls.Clear();
+
+            PlayTimeLine = new Stack<PlayInfo>();
+
+            CurrentPlayer = 0;
+
+            ChangePlayer();
+
+            Matrix = new List<List<Button>>();
             Button oldButton = new Button() { Width = 0, Location = new Point(0, 0) };
             for (int i = 0; i < Cons.CHESS_BOARD_HEIGHT; i++)
             {
+                Matrix.Add(new List<Button>());
                 for (int j = 0; j < Cons.CHESS_BOARD_WIDTH; j++)
                 {
                     Button btn = new Button()
@@ -85,12 +131,15 @@ namespace GameCaro
                         Width = Cons.CHESS_WIDTH,
                         Height = Cons.CHESS_HEIGHT,
                         Location = new Point(oldButton.Location.X + oldButton.Width, oldButton.Location.Y),
-                        BackgroundImageLayout = ImageLayout.Stretch
+                        BackgroundImageLayout = ImageLayout.Stretch,
+                        Tag = i.ToString()
                     };
 
                     btn.Click += btn_Click;
 
                     ChessBoard.Controls.Add(btn);
+
+                    Matrix[i].Add(btn);
 
                     oldButton = btn;
                 }
@@ -109,14 +158,202 @@ namespace GameCaro
 
             Mark(btn);
 
+            PlayTimeLine.Push(new PlayInfo(GetChessPoint(btn), CurrentPlayer));
+
+            CurrentPlayer = CurrentPlayer == 1 ? 0 : 1;
+
             ChangePlayer();
+
+            if (playerMarked != null)
+                playerMarked(this, new EventArgs());
+
+            if (isEndGame(btn))
+            {
+                EndGame();
+            }            
+
+        }
+
+        public void EndGame()
+        {
+            if(endedGame != null )
+            {
+                endedGame(this, new EventArgs());
+            }
+        }
+
+        public bool Undo()
+        {
+            if (PlayTimeLine.Count <= 0)
+                return false;
+
+            PlayInfo oldPoint = PlayTimeLine.Pop();
+            Button btn = Matrix[oldPoint.Point.Y][oldPoint.Point.X];
+
+            btn.BackgroundImage = null;
+
+            if (PlayTimeLine.Count <= 0)
+            {
+                CurrentPlayer = 0;
+            }
+            else
+            {
+                oldPoint = PlayTimeLine.Peek();
+                CurrentPlayer = oldPoint.CurrentPlayer == 1 ? 0 : 1;
+            }
+
+            ChangePlayer();
+
+            return true;
+        }
+
+        private bool isEndGame(Button btn)
+        {
+            return isEndHorizontal(btn) || isEndVertical(btn) || isEndPrimary(btn) || isEndSub(btn);
+        }
+
+        private Point GetChessPoint(Button btn)
+        {            
+
+            int vertical = Convert.ToInt32(btn.Tag);
+            int horizontal = Matrix[vertical].IndexOf(btn);
+
+            Point point = new Point(horizontal, vertical);
+
+            return point;
+        }
+
+        private bool isEndHorizontal(Button btn)
+        {
+            Point point = GetChessPoint(btn);
+
+            int countleft = 0;
+            for (int i = point.X; i>=0; i--)
+            {
+                if (Matrix[point.Y][i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countleft++;
+                }
+                else
+                    break;
+            }
+
+            int countright = 0;
+            for (int i = point.X + 1; i < Cons.CHESS_BOARD_WIDTH; i++)
+            {
+                if (Matrix[point.Y][i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countright++;
+                }
+                else
+                    break;
+            }
+
+            return countleft + countright == 5;
+        }
+
+        private bool isEndVertical(Button btn)
+        {
+            Point point = GetChessPoint(btn);
+
+            int countTop = 0;
+            for (int i = point.Y; i >= 0; i--)
+            {
+                if (Matrix[i][point.X].BackgroundImage == btn.BackgroundImage)
+                {
+                    countTop++;
+                }
+                else
+                    break;
+            }
+
+            int countBottom = 0;
+            for (int i = point.X + 1; i < Cons.CHESS_BOARD_HEIGHT; i++)
+            {
+                if (Matrix[i][point.X].BackgroundImage == btn.BackgroundImage)
+                {
+                    countBottom++;
+                }
+                else
+                    break;
+            }
+
+            return countTop + countBottom == 5;
+        }
+
+        private bool isEndPrimary(Button btn)
+        {
+            Point point = GetChessPoint(btn);
+
+            int countTop = 0;
+            for (int i = 0; i <= point.X; i++)
+            {
+                if (point.X - i < 0 || point.Y - i < 0)
+                    break;
+                if (Matrix[point.Y - i][point.X - i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countTop++;
+                }
+                else
+                    break;
+            }
+
+            int countBottom = 0;
+            for (int i = 1; i <= Cons.CHESS_BOARD_WIDTH - point.X; i++)
+            {
+                if (point.Y + i >= Cons.CHESS_BOARD_HEIGHT || point.X + i >= Cons.CHESS_BOARD_WIDTH)
+                    break;
+                if (Matrix[point.Y + i][point.X + i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countBottom++;
+                }
+                else
+                    break;
+            }
+
+
+            return countTop + countBottom == 5;
+        }
+
+        private bool isEndSub(Button btn)
+        {
+            Point point = GetChessPoint(btn);
+
+            int countTop = 0;
+            for (int i = 0; i <= point.X; i++)
+            {
+                if (point.X + i > Cons.CHESS_BOARD_WIDTH || point.Y - i < 0)
+                    break;
+                if (Matrix[point.Y - i][point.X + i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countTop++;
+                }
+                else
+                    break;
+            }
+
+            int countBottom = 0;
+            for (int i = 1; i <= Cons.CHESS_BOARD_WIDTH - point.X; i++)
+            {
+                if (point.Y + i > Cons.CHESS_BOARD_HEIGHT || point.X - i < 0)
+                    break;
+                if (Matrix[point.Y + i][point.X - i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countBottom++;
+                }
+                else
+                    break;
+            }
+
+
+            return countTop + countBottom == 5;
         }
 
         private void Mark(Button btn)
         {
             btn.BackgroundImage = Player[CurrentPlayer].Mark;
 
-            CurrentPlayer = CurrentPlayer == 1 ? 0 : 1;
+            
         }
 
         private void ChangePlayer()

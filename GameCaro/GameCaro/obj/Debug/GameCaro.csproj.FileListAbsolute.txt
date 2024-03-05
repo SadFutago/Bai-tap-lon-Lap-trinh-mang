@@ -18,3 +18,13 @@ C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\G
 C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.exe.config
 C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.exe
 C:\Users\DELL\Documents\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.pdb
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.exe.config
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.exe
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\bin\Debug\GameCaro.pdb
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.AssemblyReference.cache
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.Form1.resources
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.Properties.Resources.resources
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.GenerateResource.cache
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.csproj.CoreCompileInputs.cache
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.exe
+D:\Git\projectclone\Bai-tap-lon-Lap-trinh-mang\GameCaro\GameCaro\obj\Debug\GameCaro.pdb
