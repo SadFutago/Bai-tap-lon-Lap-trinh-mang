@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,6 +16,7 @@ namespace GameCaro
     {
         #region Properties
         ChessBoardManager ChessBoard;
+        SocketManager socket;
         #endregion
         public Form1()
         {
@@ -29,13 +32,15 @@ namespace GameCaro
 
             tmCoolDown.Interval = Cons.COOL_DOWN_INTERVAL;
 
-            ChessBoard.DrawChessBoard();
+            socket = new SocketManager();
+
+            //ChessBoard.DrawChessBoard();
 
             //tmCoolDown.Start();
 
             NewGame();
         }
-
+        #region Method
         void EndGame()
         {
             tmCoolDown.Stop();
@@ -80,7 +85,6 @@ namespace GameCaro
 
             if(procCoolDown.Value >= procCoolDown.Maximum )
             {
-                
                 EndGame();                
             }
         }
@@ -106,5 +110,65 @@ namespace GameCaro
                 //Application.Exit();
             e.Cancel = true;
         }
+
+        private void btnConnect_LAN_Click(object sender, EventArgs e)
+        {
+            socket.IP = txbIP_Address.Text;
+
+            if (!socket.ConnectServer())
+            {
+                socket.CreateServer();
+
+                Thread listenThread = new Thread(() =>
+                {
+                    while (true)
+                    {
+                        Thread.Sleep(500);
+                        try
+                        {
+                            Listen();
+                            break;
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                });
+                listenThread.IsBackground = true;
+                listenThread.Start();
+            }
+            else
+            {
+                Thread listenThread = new Thread(() =>
+                {
+                    Listen();
+                });
+                listenThread.IsBackground = true;
+                listenThread.Start();
+
+                socket.Send("Thông tin từ Client");
+            }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            txbIP_Address.Text = socket.GetLocalIPv4(NetworkInterfaceType.Wireless80211);
+
+            if (string.IsNullOrEmpty(txbIP_Address.Text))
+            {
+                txbIP_Address.Text = socket.GetLocalIPv4(NetworkInterfaceType.Ethernet);
+            }
+        }
+
+        void Listen()
+        {
+            string data = (string)socket.Receive();
+
+            MessageBox.Show(data);
+        }
+        #endregion
+
+        
     }
 }
