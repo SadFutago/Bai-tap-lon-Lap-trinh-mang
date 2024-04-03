@@ -68,10 +68,14 @@ namespace GameCaro
                 Application.Exit();
         }
 
-        private void ChessBoard_PlayerMarked(object sender, EventArgs e)
+        private void ChessBoard_PlayerMarked(object sender, ButtonClickEvent e)
         {
             tmCoolDown.Start();
+           panelBoard.Enabled = false;        //***********
             procCoolDown.Value = 0;
+
+            socket.Send(new SocketData((int)SocketCommand.SEND_POINT, "", e.ClickedPoint));
+            Listen();
         }
 
         private void ChessBoard_EndedGame(object sender, EventArgs e)
@@ -117,37 +121,15 @@ namespace GameCaro
 
             if (!socket.ConnectServer())
             {
+                socket.isServer = true;
+                panelBoard.Enabled = true;
                 socket.CreateServer();
-
-                Thread listenThread = new Thread(() =>
-                {
-                    while (true)
-                    {
-                        Thread.Sleep(500);
-                        try
-                        {
-                            Listen();
-                            break;
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                });
-                listenThread.IsBackground = true;
-                listenThread.Start();
             }
             else
             {
-                Thread listenThread = new Thread(() =>
-                {
-                    Listen();
-                });
-                listenThread.IsBackground = true;
-                listenThread.Start();
-
-                socket.Send("Thông tin từ Client");
+                socket.isServer = false;
+                panelBoard.Enabled = false;
+                Listen();
             }
         }
 
@@ -163,10 +145,54 @@ namespace GameCaro
 
         void Listen()
         {
-            string data = (string)socket.Receive();
-
-            MessageBox.Show(data);
+           
+                Thread listenThread = new Thread(() =>
+                {
+                    try
+                    {
+                        SocketData data = (SocketData)socket.Receive();
+                        ProcessData(data);
+                    }
+                    catch(Exception e) {  } 
+                });
+                listenThread.IsBackground = true;
+                listenThread.Start();
+            
         }
+
+        void ProcessData(SocketData data)
+        {
+            switch (data.Command)
+            {
+                case (int)SocketCommand.NOTIFY:
+                    MessageBox.Show(data.Message);
+                    break;
+                case (int)SocketCommand.NEW_GAME:
+                    break;
+                case (int)SocketCommand.SEND_POINT:
+                    this.Invoke((MethodInvoker)(() =>
+                    {
+                        procCoolDown.Value = 0;
+                        panelBoard.Enabled = true;
+                        tmCoolDown.Start();
+                        ChessBoard.OtherPlayerMarked(data.Point);
+                    }));
+                    break;
+                case (int)SocketCommand.UNDO:
+                    break;
+                case (int)SocketCommand.END_GAME:
+                    break;
+                case (int)SocketCommand.QUIT:
+                    break;
+                default:
+                    break;
+            }
+
+            Listen();
+        }
+        
+            
+        
         #endregion
 
         

@@ -144,7 +144,7 @@
             // btnConnect_LAN
             // 
             this.btnConnect_LAN.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnect_LAN.Location = new System.Drawing.Point(109, 212);
+            this.btnConnect_LAN.Location = new System.Drawing.Point(109, 222);
             this.btnConnect_LAN.Name = "btnConnect_LAN";
             this.btnConnect_LAN.Size = new System.Drawing.Size(94, 46);
             this.btnConnect_LAN.TabIndex = 4;
