@@ -46,7 +46,7 @@ namespace GameCaro
             tmCoolDown.Stop();
             panelBoard.Enabled = false;
             undoToolStripMenuItem.Enabled = false;
-            MessageBox.Show("Ket thuc");
+           // MessageBox.Show("Ket thuc");
         }
 
         void NewGame()
@@ -60,6 +60,7 @@ namespace GameCaro
         void Undo()
         {
             ChessBoard.Undo();
+            procCoolDown.Value = 0;
         }
 
         void Quit()
@@ -75,12 +76,16 @@ namespace GameCaro
             procCoolDown.Value = 0;
 
             socket.Send(new SocketData((int)SocketCommand.SEND_POINT, "", e.ClickedPoint));
+
+            undoToolStripMenuItem.Enabled = false;
+
             Listen();
         }
 
         private void ChessBoard_EndedGame(object sender, EventArgs e)
         {
             EndGame();
+            socket.Send(new SocketData((int)SocketCommand.END_GAME, "", new Point()));
         }
 
         private void tmCoolDown_Tick(object sender, EventArgs e)
@@ -89,13 +94,16 @@ namespace GameCaro
 
             if(procCoolDown.Value >= procCoolDown.Maximum )
             {
-                EndGame();                
+                EndGame();
+                socket.Send(new SocketData((int)SocketCommand.TIME_OUT, "", new Point()));
             }
         }
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewGame();
+            socket.Send(new SocketData((int)SocketCommand.NEW_GAME, "", new Point()));
+            panelBoard.Enabled = true;
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -113,6 +121,13 @@ namespace GameCaro
             if (MessageBox.Show("Ban co chac khong?", "Thong Bao", MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)
                 //Application.Exit();
             e.Cancel = true;
+            else
+            {
+                try
+                {
+                    socket.Send(new SocketData((int)SocketCommand.QUIT, "", new Point()));
+                }catch  { }
+            }
         }
 
         private void btnConnect_LAN_Click(object sender, EventArgs e)
@@ -168,6 +183,11 @@ namespace GameCaro
                     MessageBox.Show(data.Message);
                     break;
                 case (int)SocketCommand.NEW_GAME:
+                    this.Invoke((MethodInvoker)(() =>
+                    {
+                        NewGame();
+                        panelBoard.Enabled = false; 
+                    }));
                     break;
                 case (int)SocketCommand.SEND_POINT:
                     this.Invoke((MethodInvoker)(() =>
@@ -176,13 +196,24 @@ namespace GameCaro
                         panelBoard.Enabled = true;
                         tmCoolDown.Start();
                         ChessBoard.OtherPlayerMarked(data.Point);
+
+                        undoToolStripMenuItem.Enabled = true;
                     }));
                     break;
                 case (int)SocketCommand.UNDO:
+                    Undo();
+                    procCoolDown.Value = 0;
+                   
                     break;
                 case (int)SocketCommand.END_GAME:
+                    MessageBox.Show("Đã kết thúc game  ");
+                    break;
+                case (int)SocketCommand.TIME_OUT:
+                    MessageBox.Show("HẾT GIỜ  ");
                     break;
                 case (int)SocketCommand.QUIT:
+                    tmCoolDown.Stop();
+                    MessageBox.Show("Người chơi đã thoát ");
                     break;
                 default:
                     break;

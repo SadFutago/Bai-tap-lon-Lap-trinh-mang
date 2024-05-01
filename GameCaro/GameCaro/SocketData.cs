@@ -35,7 +35,8 @@ namespace GameCaro
              NOTIFY,
              NEW_GAME,
              UNDO,
-            END_GAME,
+             END_GAME,
+             TIME_OUT,
              QUIT
              
         }

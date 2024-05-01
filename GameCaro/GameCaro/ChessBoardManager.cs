@@ -215,6 +215,19 @@ namespace GameCaro
             if (PlayTimeLine.Count <= 0)
                 return false;
 
+            bool isUndo1 = UndoAStep();
+            bool isUndo2 = UndoAStep();
+
+            PlayInfo oldPoint = PlayTimeLine.Peek();
+            CurrentPlayer = oldPoint.CurrentPlayer == 1 ? 0 : 1;
+
+            return isUndo1 && isUndo2;
+        }
+
+        private bool UndoAStep() {
+            if (PlayTimeLine.Count <= 0)
+                return false;
+
             PlayInfo oldPoint = PlayTimeLine.Pop();
             Button btn = Matrix[oldPoint.Point.Y][oldPoint.Point.X];
 
@@ -227,14 +240,12 @@ namespace GameCaro
             else
             {
                 oldPoint = PlayTimeLine.Peek();
-                CurrentPlayer = oldPoint.CurrentPlayer == 1 ? 0 : 1;
             }
 
             ChangePlayer();
 
             return true;
         }
-
         private bool isEndGame(Button btn)
         {
             return isEndHorizontal(btn) || isEndVertical(btn) || isEndPrimary(btn) || isEndSub(btn);
